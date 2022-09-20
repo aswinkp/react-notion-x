@@ -9,13 +9,14 @@ import { Text } from './text'
 export const File: React.FC<{
   block: FileBlock
   className?: string
-}> = ({ block, className }) => {
+  id?: string
+}> = ({ block, className, id }) => {
   const { components, recordMap } = useNotionContext()
   const source =
     recordMap.signed_urls[block.id] || block.properties?.source?.[0]?.[0]
 
   return (
-    <div className={cs('notion-file', className)}>
+    <div className={cs('notion-file', className)} id={id}>
       <components.Link
         className='notion-file-link'
         href={source}

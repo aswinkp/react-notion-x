@@ -5,7 +5,8 @@ import {
   getBlockParentPage,
   getTextContent
 } from 'notion-utils'
-import { useLocalStorage, useWindowSize } from 'react-use'
+import reactUse from 'react-use'
+const { useLocalStorage, useWindowSize } = reactUse
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu'
 
 import { CollectionRow } from './collection-row'
@@ -31,7 +32,8 @@ export const Collection: React.FC<{
     | types.PageBlock
   className?: string
   ctx: NotionContext
-}> = ({ block, className, ctx }) => {
+  id?: string
+}> = ({ block, className, ctx, id }) => {
   /**
    * NOTE: there is a weird side effect of us using multiple bundles for
    * collections, where `useNotionContext` returns a *different* context than for
@@ -43,7 +45,7 @@ export const Collection: React.FC<{
    * To circumvent this issue, we're passing the context value directly to
    * `Collection` so all children have the correct context values.
    */
-  // console.log('Collection', Object.keys(recordMap.block).length)
+  // console.log('Collection', className)
 
   const context: NotionContext = React.useMemo(
     () => ({
@@ -64,6 +66,7 @@ export const Collection: React.FC<{
             block={block as types.PageBlock}
             pageHeader={true}
             className={className}
+            id={id}
           />
         </div>
       </NotionContextProvider>
@@ -71,7 +74,7 @@ export const Collection: React.FC<{
   } else {
     return (
       <NotionContextProvider {...context}>
-        <CollectionViewBlock block={block} className={className} />
+        <CollectionViewBlock block={block} className={className} id={id} />
       </NotionContextProvider>
     )
   }
@@ -80,7 +83,8 @@ export const Collection: React.FC<{
 const CollectionViewBlock: React.FC<{
   block: types.CollectionViewBlock | types.CollectionViewPageBlock
   className?: string
-}> = ({ block, className }) => {
+  id?: string
+}> = ({ block, className, id }) => {
   const { recordMap, showCollectionViewDropdown } = useNotionContext()
   const { view_ids: viewIds } = block
   const collectionId = getBlockCollectionId(block, recordMap)
@@ -185,7 +189,7 @@ const CollectionViewBlock: React.FC<{
   }
 
   return (
-    <div className={cs('notion-collection', className)}>
+    <div className={cs('notion-collection', className)} id={id}>
       <div className='notion-collection-header' style={style}>
         {title && (
           <div className='notion-collection-header-title'>

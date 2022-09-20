@@ -8,7 +8,8 @@ import { GracefulImage } from './graceful-image'
 export const GoogleDrive: React.FC<{
   block: GoogleDriveBlock
   className?: string
-}> = ({ block, className }) => {
+  id?: string
+}> = ({ block, className, id }) => {
   const { components, mapImageUrl } = useNotionContext()
   const properties = block.format?.drive_properties
   if (!properties) return null
@@ -22,7 +23,7 @@ export const GoogleDrive: React.FC<{
   }
 
   return (
-    <div className={cs('notion-google-drive', className)}>
+    <div className={cs('notion-google-drive', className)} id={id}>
       <components.Link
         className='notion-google-drive-link'
         href={properties.url}

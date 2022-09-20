@@ -10,7 +10,8 @@ export const CollectionRow: React.FC<{
   block: PageBlock
   pageHeader?: boolean
   className?: string
-}> = ({ block, pageHeader = false, className }) => {
+  id?: string
+}> = ({ block, pageHeader = false, className, id }) => {
   const { recordMap } = useNotionContext()
   const collectionId = block.parent_id
   const collection = recordMap.collection[collectionId]?.value
@@ -50,7 +51,7 @@ export const CollectionRow: React.FC<{
   }
 
   return (
-    <div className={cs('notion-collection-row', className)}>
+    <div className={cs('notion-collection-row', className)} id={id}>
       <div className='notion-collection-row-body'>
         {propertyIds.map((propertyId) => {
           const schema = schemas[propertyId]

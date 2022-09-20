@@ -10,7 +10,8 @@ export const EOI: React.FC<{
   block: Block
   inline?: boolean
   className?: string
-}> = ({ block, inline, className }) => {
+  id?: string
+}> = ({ block, inline, className, id }) => {
   const { components } = useNotionContext()
   const { original_url, attributes, domain } = block?.format || {}
   if (!original_url || !attributes) {
@@ -54,6 +55,7 @@ export const EOI: React.FC<{
         inline ? 'notion-external-mention' : 'notion-external-block notion-row',
         className
       )}
+      id={id}
     >
       {externalImage && (
         <div className='notion-external-image'>{externalImage}</div>
